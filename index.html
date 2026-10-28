@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#10243a">
+<title>東京駅 攻略ナビ</title>
+<style>
+:root{--navy:#10243a;--blue:#1769aa;--pale:#edf5fb;--gold:#f5bd4f;--ink:#172334;--muted:#65758a;--line:#dce5ed;--white:#fff}
+*{box-sizing:border-box} body{margin:0;background:#f3f6f9;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
+header{background:linear-gradient(135deg,#10243a,#1c527a);color:white;padding:25px 18px 22px;border-radius:0 0 24px 24px}
+.eyebrow{font-size:12px;letter-spacing:.12em;opacity:.8;font-weight:700}.brand{font-size:27px;font-weight:900;margin:7px 0 5px}.sub{font-size:13px;line-height:1.6;opacity:.9}
+.wrap{max-width:720px;margin:0 auto;padding:15px 14px 32px}
+.card{background:white;border:1px solid var(--line);border-radius:18px;padding:17px;margin-bottom:13px;box-shadow:0 5px 18px #18334d08}
+h2{font-size:16px;margin:0 0 13px;display:flex;align-items:center;gap:8px}
+.num{display:inline-grid;place-items:center;background:var(--navy);color:white;border-radius:9px;width:27px;height:27px;font-size:13px}
+label{display:block;font-size:12px;color:var(--muted);font-weight:800;margin:12px 0 6px}
+input,select{width:100%;font:inherit;font-size:16px;border:1px solid #cbd7e2;border-radius:11px;background:white;padding:13px 12px;color:var(--ink);min-height:48px}
+input:focus,select:focus{outline:3px solid #1769aa25;border-color:var(--blue)}
+.row{display:grid;grid-template-columns:1fr 42px 1fr;gap:8px;align-items:end}.swap{border:0;background:var(--pale);color:var(--blue);border-radius:12px;height:46px;font-size:20px;margin-bottom:1px}
+.primary{width:100%;border:0;background:var(--blue);color:white;font-size:16px;font-weight:800;padding:15px;border-radius:12px;margin-top:16px;min-height:50px}
+.secondary{border:1px solid #cbd7e2;background:white;color:var(--navy);font-size:14px;font-weight:700;padding:11px 13px;border-radius:10px}
+.hint{font-size:12px;color:var(--muted);line-height:1.65;margin:9px 1px 0}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.chip{border:1px solid var(--line);background:#f8fafc;border-radius:999px;padding:8px 11px;font-size:12px;color:#35475a}
+#result{display:none}.routehead{display:flex;justify-content:space-between;align-items:start;gap:10px}.routehead h2{margin-bottom:4px}.pill{background:#fff3d5;color:#79520a;font-size:11px;font-weight:800;padding:6px 9px;border-radius:999px;white-space:nowrap}
+.steps{list-style:none;padding:0;margin:16px 0 0}.steps li{position:relative;padding:0 0 17px 39px;min-height:38px;font-size:14px;line-height:1.65}.steps li:before{content:attr(data-n);position:absolute;left:0;top:0;width:27px;height:27px;display:grid;place-items:center;border-radius:50%;background:var(--pale);color:var(--blue);font-weight:900}.steps li:not(:last-child):after{content:"";position:absolute;left:13px;top:29px;bottom:0;width:2px;background:#d6e5f1}
+.notice{background:#fff8e8;border:1px solid #f5dfad;padding:11px 12px;border-radius:12px;font-size:12px;line-height:1.65;color:#6d521a;margin-top:12px}
+.links{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.links a{display:block;text-align:center;text-decoration:none;background:#eef5fb;border-radius:11px;padding:12px 7px;color:#155b91;font-size:13px;font-weight:800}
+details{border-top:1px solid var(--line);padding-top:12px;margin-top:12px}summary{font-size:13px;font-weight:800;cursor:pointer}.placegrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.place{border:1px solid var(--line);border-radius:10px;padding:10px;font-size:12px;background:#fbfdff}.place b{display:block;font-size:13px;margin-bottom:3px}.place span{color:var(--muted);line-height:1.5}
+footer{text-align:center;color:#8492a1;font-size:11px;padding:8px 15px 24px;line-height:1.7}
+@media(max-width:390px){.row{grid-template-columns:1fr 36px 1fr;gap:5px}.card{padding:14px}.brand{font-size:25px}.placegrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">STATION SURVIVAL GUIDE</div>
+  <div class="brand">東京駅 攻略ナビ 🚉</div>
+  <div class="sub">「今いる場所」と「行きたい場所」を入れて、迷子を回避。<br>駅ナカ・改札・出口まわりの移動をサポートします。</div>
+</header>
+<main class="wrap">
+  <section class="card">
+    <h2><span class="num">1</span> 今いる場所・行きたい場所</h2>
+    <div class="row">
+      <div>
+        <label for="start">今いる場所（目印・店）</label>
+        <input id="start" list="places" placeholder="例：銀の鈴" autocomplete="off">
+      </div>
+      <button class="swap" id="swap" aria-label="出発地と目的地を入れ替え">⇄</button>
+      <div>
+        <label for="dest">行きたい場所</label>
+        <input id="dest" list="places" placeholder="例：丸の内北口" autocomplete="off">
+      </div>
+    </div>
+    <datalist id="places">
+      <option value="銀の鈴"><option value="グランスタ東京"><option value="東京駅一番街"><option value="東京おかしランド">
+      <option value="東京キャラクターストリート"><option value="東京ラーメンストリート"><option value="八重洲中央口">
+      <option value="八重洲北口"><option value="八重洲南口"><option value="丸の内中央口"><option value="丸の内北口">
+      <option value="丸の内南口"><option value="新幹線南のりかえ口"><option value="新幹線中央のりかえ口">
+      <option value="JR在来線中央乗換口"><option value="京葉線ホーム"><option value="丸の内地下中央口">
+      <option value="KITTE丸の内"><option value="大丸東京店"><option value="日本橋口"><option value="改札外">
+    </datalist>
+    <div class="chips">
+      <button class="chip" data-start="銀の鈴">📍 銀の鈴にいる</button>
+      <button class="chip" data-start="東京駅一番街">🛍️ 東京駅一番街にいる</button>
+      <button class="chip" data-start="グランスタ東京">🍱 グランスタにいる</button>
+      <button class="chip" data-start="八重洲中央口">🚪 八重洲中央口にいる</button>
+    </div>
+    <button class="primary" id="go">道順を案内する</button>
+    <p class="hint">店名は入力してOK。場所が候補にない場合も、Googleマップで検索できるようにします。</p>
+  </section>
+
+  <section class="card" id="result" aria-live="polite">
+    <div class="routehead">
+      <div><h2>🧭 移動ガイド</h2><div id="routeTitle" style="font-size:13px;color:#65758a"></div></div>
+      <span class="pill">ルート確認</span>
+    </div>
+    <ol class="steps" id="steps"></ol>
+    <div class="notice" id="caution"></div>
+    <div class="links" id="mapLinks"></div>
+  </section>
+
+  <section class="card">
+    <h2><span class="num">2</span> 迷いやすい場所メモ</h2>
+    <div class="placegrid">
+      <div class="place"><b>🔔 銀の鈴</b><span>八重洲側の地下1階。待ち合わせの目印。</span></div>
+      <div class="place"><b>🍜 東京ラーメンストリート</b><span>八重洲側の地下1階、東京駅一番街エリア。</span></div>
+      <div class="place"><b>🎁 東京キャラクターストリート</b><span>八重洲側の地下1階、東京駅一番街エリア。</span></div>
+      <div class="place"><b>🛍️ 大丸東京店</b><span>八重洲北口側。駅に隣接する百貨店。</span></div>
+      <div class="place"><b>🧱 丸の内側</b><span>赤レンガ駅舎・皇居方面。丸の内北口／中央口／南口。</span></div>
+      <div class="place"><b>🚄 京葉線</b><span>他のJRホームから距離があるため、案内表示を見て移動時間に余裕を。</span></div>
+    </div>
+    <details>
+      <summary>使い方・注意点</summary>
+      <p class="hint">① 今いる場所を、店名・改札名・目印で入力。② 目的地を入力。③ 駅内の基本的な位置関係を確認し、必要なら地図リンクを開いてください。知らない店名や細かい店舗位置は、駅構内の案内板・公式フロアマップで確認してください。</p>
+    </details>
+  </section>
+  <section class="card">
+    <h2><span class="num">3</span> すぐ開くリンク</h2>
+    <div class="links">
+      <a href="https://www.google.com/maps/search/?api=1&query=東京駅" target="_blank" rel="noopener">Googleマップで東京駅</a>
+      <a href="https://www.google.com/search?q=東京駅+構内図+公式" target="_blank" rel="noopener">東京駅の構内図を探す</a>
+      <a href="https://www.google.com/search?q=グランスタ東京+フロアマップ" target="_blank" rel="noopener">グランスタのフロアマップ</a>
+      <a href="https://www.google.com/search?q=東京駅一番街+フロアガイド" target="_blank" rel="noopener">東京駅一番街の案内</a>
+    </div>
+  </section>
+</main>
+<footer>このページは簡易ナビです。駅構内の工事・店舗移転・通行規制をリアルタイム反映していません。<br>正確なルートは現地の案内表示と公式情報を優先してください。</footer>
+<script>
+const known = {
+  "銀の鈴": {area:"八重洲側・地下1階",tips:"銀の鈴は八重洲側の地下1階にあります。周囲の「グランスタ」「東京駅一番街」の案内表示を確認してください。"},
+  "グランスタ東京": {area:"駅構内（複数エリア）",tips:"グランスタは複数のエリアに分かれています。店名まで分かる場合は、店名で構内案内を検索するのが確実です。"},
+  "東京駅一番街": {area:"八重洲側・地下1階中心",tips:"東京駅一番街は八重洲側の地下1階エリアです。キャラクターストリートやラーメンストリートの案内表示が目印です。"},
+  "東京おかしランド": {area:"東京駅一番街・地下1階",tips:"東京駅一番街のフロア案内で「東京おかしランド」を探してください。"},
+  "東京キャラクターストリート": {area:"東京駅一番街・地下1階",tips:"八重洲側の東京駅一番街エリア。地下の案内板で「キャラクターストリート」を確認してください。"},
+  "東京ラーメンストリート": {area:"東京駅一番街・地下1階",tips:"八重洲側の東京駅一番街エリア。地下の案内板で「ラーメンストリート」を確認してください。"},
+  "八重洲中央口": {area:"八重洲側・1階",tips:"八重洲側の地上出口です。地下街へ行く場合は、駅構内の階段・エスカレーターから地下1階へ。"},
+  "八重洲北口": {area:"八重洲側・1階",tips:"大丸東京店側の出口です。地下の東京駅一番街へ向かう場合は、地下フロアの案内表示を確認してください。"},
+  "八重洲南口": {area:"八重洲側・1階",tips:"八重洲側の南寄りの出口です。目的地が地下街か駅外かを案内表示で確認してください。"},
+  "丸の内中央口": {area:"丸の内側・1階",tips:"丸の内側の赤レンガ駅舎に面した出口です。八重洲側へ行く場合は、駅構内の通路・改札案内に従ってください。"},
+  "丸の内北口": {area:"丸の内側・1階",tips:"丸の内側の北寄り出口です。赤レンガ駅舎側に出ます。"},
+  "丸の内南口": {area:"丸の内側・1階",tips:"丸の内側の南寄り出口です。赤レンガ駅舎側に出ます。"},
+  "丸の内地下中央口": {area:"丸の内側・地下1階",tips:"丸の内側の地下出口です。地下通路や丸の内エリアへ向かうときの目印になります。"},
+  "日本橋口": {area:"駅北側・地上",tips:"日本橋口は駅の北側です。目的地が新幹線改札内か駅外かを先に確認してください。"},
+  "大丸東京店": {area:"八重洲北口側",tips:"駅に隣接する百貨店です。駅構内からは「大丸」または「八重洲北口」の表示を探してください。"},
+  "KITTE丸の内": {area:"丸の内南側・駅外",tips:"丸の内側へ出て、駅前広場・丸の内南側方面の案内に従ってください。"},
+  "京葉線ホーム": {area:"駅構内・京葉線エリア",tips:"京葉線ホームは他のJRホームから離れています。「京葉線」の表示を追い、時間に余裕を持って移動してください。"},
+  "新幹線南のりかえ口": {area:"新幹線乗換改札",tips:"新幹線に乗り換えるための改札です。乗車する新幹線の会社・ホーム番号も確認してください。"},
+  "新幹線中央のりかえ口": {area:"新幹線乗換改札",tips:"新幹線の乗換改札です。東海道・山陽新幹線か、東北・上越・北陸方面の新幹線かを確認して案内表示に従ってください。"},
+  "JR在来線中央乗換口": {area:"JR在来線の乗換エリア",tips:"乗換先の路線名・ホーム番号を確認して、黄色や電光掲示の案内表示に従ってください。"},
+  "改札外": {area:"位置の詳細不明",tips:"どの出口・建物の近くかを追加すると案内しやすくなります。"}
+};
+function norm(s){return s.trim().replace(/\s+/g,"");}
+function addStep(n,text){const li=document.createElement("li");li.dataset.n=n;li.textContent=text;document.getElementById("steps").appendChild(li);}
+function makeRoute(){
+ const start=norm(document.getElementById("start").value), dest=norm(document.getElementById("dest").value);
+ if(!start||!dest){alert("「今いる場所」と「行きたい場所」を両方入力してください。");return;}
+ const result=document.getElementById("result"); result.style.display="block";
+ document.getElementById("routeTitle").textContent=start+" → "+dest;
+ const steps=document.getElementById("steps");steps.innerHTML="";
+ const s=known[start],d=known[dest];
+ addStep(1,"現在地：「"+start+"」");
+ if(s) addStep(2,"目安のエリア："+s.area+"。"+s.tips);
+ else addStep(2,"現在地の詳しい位置は登録されていません。近くの改札名・店名・階数を現地表示で確認してください。");
+ if(start===dest) addStep(3,"出発地と目的地が同じ入力です。目的地の店名や出口名をもう一度確認してください。");
+ else if(s&&d&&s.area===d.area) addStep(3,"同じエリア内の可能性があります。「"+dest+"」のフロア案内・頭上の店舗表示を探してください。");
+ else if(s&&d) addStep(3,"目的地の目安："+d.area+"。案内板で「"+dest+"」または目的地エリアの表示を確認し、階数にも注意して移動してください。");
+ else addStep(3,"目的地「"+dest+"」の正確な位置は未登録です。下のGoogleマップ検索で場所を確認してください。");
+ if(d) addStep(4,d.tips);
+ addStep(5,"分からなくなったら、近くの案内板で「八重洲」「丸の内」「新幹線」「京葉線」などの大きな案内を先に確認してください。");
+ document.getElementById("caution").textContent="注意：これは登録済みの目印を使った簡易ガイドで、現在地測位や駅構内のリアルタイム経路案内ではありません。店名が同じでもフロアや改札内外が異なる場合があります。";
+ const links=document.getElementById("mapLinks");links.innerHTML="";
+ const q=encodeURIComponent(dest+" 東京駅");
+ const route=encodeURIComponent(start+" 東京駅");
+ const a=document.createElement("a");a.href="https://www.google.com/maps/dir/?api=1&origin="+route+"&destination="+q+"&travelmode=walking";a.target="_blank";a.rel="noopener";a.textContent="Googleマップで経路";links.appendChild(a);
+ const b=document.createElement("a");b.href="https://www.google.com/search?q="+encodeURIComponent(dest+" 東京駅 構内 フロアマップ");b.target="_blank";b.rel="noopener";b.textContent="目的地の場所を検索";links.appendChild(b);
+ result.scrollIntoView({behavior:"smooth",block:"start"});
+}
+document.getElementById("go").addEventListener("click",makeRoute);
+document.getElementById("swap").addEventListener("click",()=>{const s=document.getElementById("start"),d=document.getElementById("dest");[s.value,d.value]=[d.value,s.value];});
+document.querySelectorAll("[data-start]").forEach(b=>b.addEventListener("click",()=>{document.getElementById("start").value=b.dataset.start;}));
+document.getElementById("dest").addEventListener("keydown",e=>{if(e.key==="Enter")makeRoute();});
+</script>
+</body>
+</html>
